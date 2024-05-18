@@ -5,6 +5,7 @@
 
 # IGNORE CONFIG
 ignoreTEST.config
+ignoreTEST2.config
 # User-specific files
 *.rsuser
 *.suo
