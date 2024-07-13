@@ -44,7 +44,7 @@ namespace ELLIE_SYSTEM.Classes
                  "from ( " +
                  "select case when exists(select 1 " +
                  "from mfg_student_info_bt s " +
-                 "where s.id = "+ "'"+input_studentid+"'"+
+                 "where s.id = "+ "N'"+input_studentid+"'"+
                  "and s.default_teacher_id = t.id " +
                  ") then 1 else 0 end is_default_teacher, t.* " +
                  "from mfg_teacher_info_bt t " +
@@ -59,14 +59,14 @@ namespace ELLIE_SYSTEM.Classes
         public static String getUserName(String input_studentid)
         {
             return
-                "select name from mfg_student_info_bt t where t.id = "+ "'" + input_studentid + "'";
+                "select name from mfg_student_info_bt t where t.id = "+ "N'" + input_studentid + "'";
               
         }
 
         public static String getUserid(String input_studentname)
         {
             return
-                "select id from mfg_student_info_bt t where t.name = " + "'" + input_studentname + "'";
+                "select id from mfg_student_info_bt t where t.name = " + "N'" + input_studentname + "'";
 
         }
 
@@ -78,7 +78,7 @@ namespace ELLIE_SYSTEM.Classes
                 "      when class_type= '1' then '放鬆' " +
                 "      when class_type= '2' then '共同' " +
                 "      else '淋巴' end 課別 " +
-                " from mfg_consume_record_ht t where t.student_id = " + "'" + input_studentid + "'"+
+                " from mfg_consume_record_ht t where t.student_id = " + "N'" + input_studentid + "'"+
                 "and t.recordtime > DATEADD(d,-30,GETDATE())"+
                 "order by t.recordtime desc"
                 ;
@@ -89,7 +89,7 @@ namespace ELLIE_SYSTEM.Classes
         {
             return
                 "select t.student_name 學生, t.price 購買價格, t.recordtime 購課時間 from mfg_purcHase_record_bt t " +
-                "where t.student_name = " + "'" + input_studentname + "'" +
+                "where t.student_name = " + "N'" + input_studentname + "'" +
                 " and t.class_type = " + input_class_type +
                 " order by t.recordtime asc";
 
@@ -98,7 +98,7 @@ namespace ELLIE_SYSTEM.Classes
         public static String getUserConsumeClass(String input_studentid, String input_class_type)
         {
             return
-                     "select count(1) remain_class from MFG_PURCHASE_RECORD_BT t where t.student_id = " + "'" + input_studentid + "' "+
+                     "select count(1) remain_class from MFG_PURCHASE_RECORD_BT t where t.student_id = " + "N'" + input_studentid + "' "+
                      " and t.class_type = " + input_class_type 
                      ;
 
@@ -107,11 +107,11 @@ namespace ELLIE_SYSTEM.Classes
         public static String getTeacherIDbyName(String input_teacher_name)
         {
             return
-                     "select id from mfg_teacher_info_bt t where t.name = " + "'" + input_teacher_name + "'";
+                     "select id from mfg_teacher_info_bt t where t.name = " + "N'" + input_teacher_name + "'";
         }
 
         public static String updateRemainClass(String input_student_id, string input_new_remain_class) {
-            return "UPDATE mfg_student_info_bt SET remain_class = " + input_new_remain_class+  " WHERE id = " + "'" + input_student_id + "'";
+            return "UPDATE mfg_student_info_bt SET remain_class = " + input_new_remain_class+  " WHERE id = " + "N'" + input_student_id + "'";
         }
 
         public static String InsertConsumeRecord(String input_student_id, String input_student_name, String input_teacher_id, String input_teacher_name,string input_price,string input_class_type)
@@ -120,8 +120,8 @@ namespace ELLIE_SYSTEM.Classes
 
             "insert into mfg_consume_record_ht(student_id, student_name, teacher_id, teacher_name, recordtime,price,class_type) " +
             "values( " +
-                "'" + input_student_id + "', " +
-                "'" + input_student_name + "', " +
+                "N'" + input_student_id + "', " +
+                "N'" + input_student_name + "', " +
                 "'" + input_teacher_id + "', " +
                 "'" + input_teacher_name + "', " +
                 "GETDATE(), " +
@@ -141,7 +141,7 @@ namespace ELLIE_SYSTEM.Classes
                               "select " +
                                "ROW_NUMBER() over(partition by 1 order by recordtime asc) del_order " +
                                ", t.* from mfg_purchase_record_bt t " +
-                               "where t.student_id = " + "'" + input_student_id + "' "+
+                               "where t.student_id = " + "N'" + input_student_id + "' "+
                                " and t.price = " + input_price+
                                " and t.class_type = " + input_class_type +
                                ")t " +
@@ -161,7 +161,7 @@ namespace ELLIE_SYSTEM.Classes
                               "select " +
                                "ROW_NUMBER() over(partition by 1 order by recordtime asc) update_order " +
                                ", t.* from mfg_purchase_record_ht t " +
-                               "where t.student_id = " + "'" + input_student_id + "' " +
+                               "where t.student_id = " + "N'" + input_student_id + "' " +
                                " and t.price = " + input_price +
                                " and t.class_type = " + input_class_type +
                                " and t.status = 'INI'"+
@@ -181,7 +181,7 @@ namespace ELLIE_SYSTEM.Classes
                  " select" +
                  " ROW_NUMBER() over(partition by 1 order by recordtime asc) consume_order" +
                  ", t.* from mfg_purchase_record_bt t" +
-                 "  where t.student_id = " + "'" + input_student_id + "'" +
+                 "  where t.student_id = " + "N'" + input_student_id + "'" +
                  " and t.class_type = " + input_class_type +
              ")t " +
                  "where t.consume_order = 1 ";
@@ -193,8 +193,8 @@ namespace ELLIE_SYSTEM.Classes
 
             "insert into mfg_purchase_record_bt(student_id, student_name, price, class_type, recordtime) " +
             "values( " +
-                "'" + input_student_id + "', " +
-                "'" + input_student_name + "', " 
+                "N'" + input_student_id + "', " +
+                "N'" + input_student_name + "', " 
                     + input_price + ", " +
                       input_class_type + ", "+
                 "'" + input_record_time + "' " +
@@ -207,8 +207,8 @@ namespace ELLIE_SYSTEM.Classes
 
             "insert into mfg_purchase_record_ht(student_id, student_name, price, class_type, recordtime,status) " +
             "values( " +
-                "'" + input_student_id + "', " +
-                "'" + input_student_name + "', "
+                "N'" + input_student_id + "', " +
+                "N'" + input_student_name + "', "
                     + input_price + ", " +
                       input_class_type + ", "+
                 "'" + input_record_time + "' " +
@@ -276,7 +276,7 @@ namespace ELLIE_SYSTEM.Classes
                    "union all " +
                    "select t.id, t.password, t.privilege,t.name from mfg_teacher_info_bt t " +
                    ") h " +
-                   "where h.id = " + "'" + input_id + "'"  ;               
+                   "where h.id = " + "N'" + input_id + "'"  ;               
  
         }
         public static String Check_User_Duplicate(String input_id)
@@ -284,7 +284,7 @@ namespace ELLIE_SYSTEM.Classes
             return
                    "SELECT *  " +
                    "FROM mfg_student_info_bt t " +
-                   "where t.id = " + "'" + input_id + "'";
+                   "where t.id = " + "N'" + input_id + "'";
 
         }
 
@@ -301,8 +301,8 @@ namespace ELLIE_SYSTEM.Classes
         {
             return
             "insert into mfg_student_info_bt " +
-            "select " + "'" + input_id + "'" + " id, " +
-                       "'" + input_name + "'" + " name, " +
+            "select " + "N'" + input_id + "'" + " id, " +
+                       "N'" + input_name + "'" + " name, " +
                        "'" + input_password + "'" + " password, " +
                        "(" +
                        "select max(k.id) from mfg_teacher_info_bt k " +
@@ -329,7 +329,7 @@ namespace ELLIE_SYSTEM.Classes
             return
                     "update mfg_student_info_bt " +
                     "set password = " + "'" + input_password + "'" +
-                    "where id = " + "'" + input_id + "'";
+                    "where id = " + "N'" + input_id + "'";
 
         }
 
